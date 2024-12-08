@@ -1,0 +1,46 @@
+<div class="reporte-container">
+  <h2>Reporte de viajes</h2>
+
+  <div class="grid-container">
+    <div class="field">
+      <label for="fechaInicio">Fecha Inicio</label>
+      <p-calendar
+        id="fechaInicio"
+        [(ngModel)]="fechaInicio"
+        dateFormat="yy-mm-dd"
+        placeholder="Selecciona la fecha de inicio"
+      ></p-calendar>
+    </div>
+    
+    <div class="field">
+      <label for="fechaFin">Fecha Fin</label>
+      <p-calendar
+        id="fechaFin"
+        [(ngModel)]="fechaFin"
+        dateFormat="yy-mm-dd"
+        placeholder="Selecciona la fecha de fin"
+      ></p-calendar>
+    </div>
+    
+    <div class="field">
+      <label for="transportista">Transportista</label>
+      <p-dropdown
+        id="transportista"
+        [(ngModel)]="transportistaSeleccionado"
+        [options]="transportistas"
+        optionLabel="nombre"
+        placeholder="Selecciona un transportista"
+      ></p-dropdown>
+    </div>
+    
+    <div class="button-display">
+      <p-button 
+        (click)="generarPDF()" 
+        label="Generar Reporte" 
+        [disabled]="!esFormularioValido()"
+      ></p-button>
+    </div>
+
+</div>
+
+<div id="pdfModal" class="pdf-modal"></div>

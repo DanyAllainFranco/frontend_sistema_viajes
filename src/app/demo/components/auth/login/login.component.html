@@ -1,0 +1,39 @@
+<p-toast key="tst"></p-toast>
+<div class="container">
+    <div class="top"></div>
+    <div class="bottom"></div>
+    <div class="center">
+      <h2 class="title">Inicio de Sesión</h2>
+  
+      <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+        <input
+          type="text"
+          placeholder="Usuario"
+          formControlName="user_username"
+          [ngClass]="{ 'is-invalid': loginForm.get('user_username')?.invalid && loginForm.get('user_username')?.touched }"
+
+        />
+        <small *ngIf="loginForm.get('user_username')?.invalid && loginForm.get('user_username')?.touched" class="error-message">
+          El usuario es obligatorio.
+        </small>
+  
+        <input
+          type="password"
+          placeholder="Contraseña"
+          formControlName="user_password_hash"
+          [ngClass]="{ 'is-invalid': loginForm.get('user_password_hash')?.invalid && loginForm.get('user_password_hash')?.touched }"
+
+        />
+        <small *ngIf="loginForm.get('user_password_hash')?.invalid && loginForm.get('user_password_hash')?.touched" class="error-message">
+          La contraseña es obligatoria.
+        </small>
+  
+        <div class="button-container">
+          <p-button class="button" type="submit" [disabled]="loginForm.invalid">Iniciar Sesión</p-button>
+        </div> 
+           </form>
+  
+      <h2 *ngIf="errorMessage" class="error-text">{{ errorMessage }}</h2>
+    </div>
+  </div>
+  

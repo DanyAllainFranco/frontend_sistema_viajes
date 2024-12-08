@@ -1,0 +1,67 @@
+<div class="grid">
+    <div class="col-12 lg:col-4">
+        <div class="card mb-0">
+            <div class="flex justify-content-between mb-3">
+                <div>
+                    <span class="block text-500 font-medium mb-3">Cantidad de Viajes</span>
+                    <div class="text-900 font-medium text-xl">{{ cantidadViajes }}</div>
+                </div>
+                <div class="flex align-items-center justify-content-center bg-blue-100 border-round" [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
+                    <i class="pi pi-car text-blue-500 text-xl"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 lg:col-4">
+        <div class="card mb-0">
+            <div class="flex justify-content-between mb-3">
+                <div>
+                    <span class="block text-500 font-medium mb-3">Total Kilómetros</span>
+                    <div class="text-900 font-medium text-xl">{{ totalKm }} KM</div>
+                </div>
+                <div class="flex align-items-center justify-content-center bg-orange-100 border-round" [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
+                    <i class="pi pi-map text-orange-500 text-xl"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 lg:col-4">
+        <div class="card mb-0">
+            <div class="flex justify-content-between mb-3">
+                <div>
+                    <span class="block text-500 font-medium mb-3">Total Dinero</span>
+                    <div class="text-900 font-medium text-xl">{{ totalDinero }}</div>
+                </div>
+                <div class="flex align-items-center justify-content-center bg-green-100 border-round" [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
+                    <i class="pi pi-dollar text-green-500 text-xl"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 lg:col-6">
+        <div class="card">
+            <h5>Promedio de Distancia</h5>
+            <p-chart type="doughnut" [data]="promedioDistanciaData" [options]="chartOptions"></p-chart>
+        </div>
+    </div>
+    <div class="col-12 lg:col-6">
+        <div class="card">
+            <h5>Transportistas Activos</h5>
+            <p-chart type="pie" [data]="transportistasActivosData" [options]="chartOptions"></p-chart>
+        </div>
+    </div>
+    <div class="col-12 lg:col-6">
+
+        <div class="card">
+            <h5>Viajes por Sucursal</h5>
+            <p-chart type="polarArea" [data]="viajesPorSucursalData" [options]="chartOptions"></p-chart>
+        </div>
+    </div>
+    <div class="col-12 lg:col-6">
+        <div class="card">
+            <h5>Colaboradores Activos</h5>
+            <p-chart type="bar" [data]="colaboradoresActivosData" [options]="chartOptions"></p-chart>
+        </div>
+    </div>
+</div>

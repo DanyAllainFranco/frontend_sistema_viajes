@@ -1,0 +1,77 @@
+<button pButton label="Nuevo" class="p-button-success" icon="pi pi-plus" (click)="mostrarDialog()"></button>
+
+<p-table [value]="viajes" [responsive]="true" dataKey="viaj_id" [paginator]="true" [rows]="10">
+  <ng-template pTemplate="header">
+    <tr>
+      <th>Fecha de Viaje</th>
+      <th>Sucursal</th>
+      <th>Transportista</th>
+      <th>Total KM</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-viaje>
+    <tr>
+      <td>{{ viaje?.fecha_viaje | date: 'dd/MM/yyyy' }}</td>
+      <td>{{ viaje?.sucursal_nombre }}</td>
+      <td>{{ viaje?.transportista_nombre }} {{ viaje?.transportista_apellido}}</td>
+      <td>{{ viaje?.total_km_viaje }} km</td>
+    </tr>
+  </ng-template>
+</p-table>
+
+<p-dialog [(visible)]="displayDialog" [modal]="true" [closable]="false" [style]="{width: '50vw'}">
+  <p-header>
+    {{ modalTitle }} 
+  </p-header>
+  <div class="p-fluid form-grid">
+    <div class="form-item">
+      <label for="fecha_viaje">Fecha del Viaje</label>
+      <p-calendar        appendTo="body"      [(ngModel)]="viajeSeleccionado.viaj_fecha" [showTime]="false" dateFormat="dd/mm/yy" [placeholder]="'Seleccionar fecha'" id="fecha_viaje"></p-calendar>
+    </div>
+
+    <div class="form-item">
+      <label for="sucursal_id">Sucursal</label>
+      <p-dropdown 
+      appendTo="body"
+
+        id="sucursal" 
+        [options]="sucursales" 
+        [(ngModel)]="viajeSeleccionado.sucursal_id" 
+        optionLabel="nombre" 
+        placeholder="Seleccionar sucursal" 
+        name="sucursal"
+        [showClear]="true" 
+        (onChange)="onSucursalChange($event.value)">
+      </p-dropdown>
+    </div>
+
+    <div class="form-item">
+      <label for="colaboradores">Colaboradores</label>
+      <p-multiSelect 
+       appendTo="body"
+        [options]="colaboradores" 
+        optionLabel="nombre" 
+        [(ngModel)]="viajeSeleccionado.colaboradores" 
+        display="chip" 
+        placeholder="Selecciona colaboradores">
+      </p-multiSelect>
+    </div>
+
+    <div class="form-item">
+      <label for="transportista_id">Transportista</label>
+      <p-dropdown 
+      appendTo="body"
+
+        [options]="transportistas" 
+        [(ngModel)]="viajeSeleccionado.transportista_id" 
+        placeholder="Selecciona un transportista" 
+        optionLabel="nombre">
+      </p-dropdown>
+    </div>
+
+    <div class="button-group">
+      <p-button  severity="danger" label="Cancelar"   (click)="cancelar()"></p-button>
+      <p-button label="Guardar" (click)="guardarViaje()" [disabled]="!esFormularioValido()"></p-button>
+    </div>
+  </div>
+</p-dialog>

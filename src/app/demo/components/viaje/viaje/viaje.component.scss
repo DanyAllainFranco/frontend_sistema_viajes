@@ -1,0 +1,72 @@
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Dos columnas */
+    gap: 20px; /* Espaciado entre columnas */
+  }
+  
+  .field {
+    display: flex;
+    flex-direction: column; /* Label arriba del input */
+  }
+  
+  .field label {
+    font-weight: bold;
+    margin-bottom: 5px; /* Espacio entre el label y el campo */
+  }
+  
+  .button-container {
+    margin-top: 20px;
+    text-align: center; /* Botón centrado */
+  }
+  
+
+  ::ng-deep .p-element .p-multiselect-label-container{
+ width: 200px !important;
+  }
+
+  ::ng-deep .p-dropdown .p-dropdown-label{
+    width: 200px !important;
+  }
+
+  ::ng-deep .p-fluid .p-calendar .p-inputtext{
+    width: 234.98px !important;
+  }
+
+  button{
+    margin-bottom: 5px;
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; 
+    gap: 1px;
+    width: 100%;
+  }
+  
+  .form-item {
+    display: flex;
+    flex-direction: column; 
+    align-items: flex-start; 
+  }
+  
+  label {
+    margin-bottom: 8px; 
+    font-weight: bold;
+    font-size: 14px;
+  }
+  .button-group {
+    grid-column: span 2;
+    display: flex;
+    margin-top: 16px; 
+    justify-content: flex-end;
+    gap: 5px;
+  }
+
+  ::ng-deep .p-dialog .p-dialog-content:last-of-type{
+    width: 525px;
+  }
+
+  ::ng-deep .p-dialog-draggable .p-dialog-header{
+    width: 525px;
+
+  }
