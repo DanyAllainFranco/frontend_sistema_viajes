@@ -15,8 +15,10 @@ export class ViajeComponent implements OnInit {
   colaboradores: any[] = [];
   displayDialog: boolean = false;
   modalTitle: string = '';
+  minDate: Date = new Date(1990, 0, 1); 
+  maxDate: Date = new Date(2990, 11, 31); 
 
-  constructor(private viajesService: ViajesService, private messageService: MessageService) { }
+  constructor(private viajesService: ViajesService, private messageService: MessageService) {}
 
   ngOnInit(): void {
     this.cargarViajes();
@@ -25,9 +27,18 @@ export class ViajeComponent implements OnInit {
   }
 
   cargarViajes(): void {
-    this.viajesService.getViajes().subscribe(data => {
-      this.viajes = data;
-    });
+    this.viajesService.getViajes().subscribe(
+      (data) => {
+        this.viajes = data;
+      },
+      (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'No se pudieron cargar los viajes.',
+        });
+      }
+    );
   }
 
   cargarSucursales(): void {
@@ -44,7 +55,8 @@ export class ViajeComponent implements OnInit {
           summary: 'Error',
           detail: 'No se pudieron cargar las sucursales.',
         });
-      });
+      }
+    );
   }
 
   cargarTransportistas(): void {
@@ -61,7 +73,8 @@ export class ViajeComponent implements OnInit {
           summary: 'Error',
           detail: 'No se pudieron cargar los transportistas.',
         });
-      });
+      }
+    );
   }
 
   cargarColaboradores(sucursalId: number): void {
@@ -78,58 +91,63 @@ export class ViajeComponent implements OnInit {
           summary: 'Error',
           detail: 'No se pudieron cargar los colaboradores.',
         });
-      });
+      }
+    );
   }
 
   onSucursalChange(sucursal: any): void {
-   this.cargarColaboradores(sucursal.id);
+    this.cargarColaboradores(sucursal.id);
   }
 
-  mostrarDialog(viaje?: any): void {
-    if (viaje) {
-      this.viajeSeleccionado = { ...viaje };  
-      this.modalTitle = 'Editar Viaje';  
-      this.onSucursalChange(viaje.sucursal_id);  
-    } else {
-      this.viajeSeleccionado = { colaboradores: [], viaj_fecha: null, transportista_id: null, sucursal_id: null };
-      this.modalTitle = 'Nuevo Viaje';  
-    }
+  mostrarDialog(): void {
+    this.viajeSeleccionado = { colaboradores: [], viaj_fecha: null, transportista_id: null, sucursal_id: null };
+    this.modalTitle = 'Nuevo Viaje';
     this.displayDialog = true;
   }
 
   guardarViaje(): void {
     const colaboradoresIds = this.viajeSeleccionado.colaboradores.map((col: any) => col.id);
-  
-    if (this.viajeSeleccionado.viaj_id) {
-      this.viajeSeleccionado.sucursal_id = this.viajeSeleccionado.sucursal_id.id; 
-      this.viajeSeleccionado.transportista_id = this.viajeSeleccionado.transportista_id.id;  
-      
-      this.viajeSeleccionado.colaboradores = colaboradoresIds;
-  
-      this.viajesService.actualizarViaje(this.viajeSeleccionado.viaj_id, this.viajeSeleccionado).subscribe(response => {
-        this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Viaje actualizado con éxito' });
-        this.cargarViajes();
-        this.displayDialog = false;
+
+    const totalDistancia = this.viajeSeleccionado.colaboradores.reduce(
+      (sum: number, col: any) => sum + (col.distancia_km || 0), 
+      0
+    );
+    
+    if (totalDistancia > 100) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'La suma de las distancias no debe superar los 100 km.',
       });
-    } else {
-      this.viajeSeleccionado.sucursal_id = this.viajeSeleccionado.sucursal_id.id;  
-      this.viajeSeleccionado.transportista_id = this.viajeSeleccionado.transportista_id.id;  
-  
-      this.viajeSeleccionado.colaboradores = colaboradoresIds;
-  
-  
-      this.viajesService.crearViaje(this.viajeSeleccionado).subscribe(response => {
-        this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Viaje creado con éxito' });
-        this.cargarViajes();
-        this.displayDialog = false;
-      });
+      return;
     }
-  }
-  eliminarViaje(id: number): void {
-    this.viajesService.eliminarViaje(id).subscribe(() => {
-      this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Viaje eliminado con éxito' });
-      this.cargarViajes();
-    });
+
+    const colaboradoresViajesHoy = this.viajes.filter((v: any) =>
+      v.viaj_fecha === this.viajeSeleccionado.viaj_fecha &&
+      this.viajeSeleccionado.colaboradores.some((col: any) => v.colaboradores.includes(col.id))
+    );
+
+    if (colaboradoresViajesHoy.length > 0) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Un colaborador solo puede viajar una vez por día.',
+      });
+      return;
+    }
+    this.viajeSeleccionado.sucursal_id = this.viajeSeleccionado.sucursal_id.id;
+    this.viajeSeleccionado.transportista_id = this.viajeSeleccionado.transportista_id.id;
+    this.viajeSeleccionado.colaboradores = colaboradoresIds;
+
+    this.viajesService.crearViaje(this.viajeSeleccionado).subscribe(
+      (response) => {
+        this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Viaje creado con éxito' });
+        window.location.reload(); 
+      },() =>{
+        this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Viaje creado con éxito' });
+        window.location.reload(); 
+      }
+    );
   }
 
   cancelar(): void {
@@ -144,4 +162,5 @@ export class ViajeComponent implements OnInit {
       !!this.viajeSeleccionado.transportista_id
     );
   }
+
 }

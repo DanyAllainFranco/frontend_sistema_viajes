@@ -121,8 +121,10 @@ export class SucursalComponent implements OnInit {
             summary: 'Éxito',
             detail: 'Asignación eliminada correctamente.',
           });
-          this.display = false;
+          this.cargarSucursalesAsignadas();
           this.loadSucursales();
+          this.loadColaboradores()
+          this.display = false;
         },
         (error) => {
           this.messageService.add({
@@ -157,6 +159,22 @@ export class SucursalComponent implements OnInit {
     
     const colaboradorId = this.colaboradorSeleccionado.id;
     const sucursalId = this.sucursalSeleccionada.id;
+
+    const asignacionExistente = this.sucursalesAsignadas.find(
+      (asignacion) =>
+        asignacion.colaborador_id === colaboradorId &&
+        asignacion.sucursal_id === sucursalId
+    );
+
+    if (asignacionExistente) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'El colaborador ya tiene esta sucursal asignada.',
+      });
+      return;
+    }
+
     if (this.modalTitle == "Editar Asignación") {
       this.sucursalService.actualizarSucursal(colaboradorId, sucursalId, this.distancia).subscribe(
         (response) => {
@@ -165,7 +183,9 @@ export class SucursalComponent implements OnInit {
             summary: 'Éxito',
             detail: 'Sucursal asignada correctamente.',
           });
+          this.cargarSucursalesAsignadas();
           this.loadSucursales();
+          this.loadColaboradores()
           this.resetForm();
           this.mostrarDialog = false;
         },
@@ -185,7 +205,9 @@ export class SucursalComponent implements OnInit {
             summary: 'Éxito',
             detail: 'Sucursal asignada correctamente.',
           });
+          this.cargarSucursalesAsignadas();
           this.loadSucursales();
+          this.loadColaboradores()
           this.resetForm();
           this.mostrarDialog = false;
         },

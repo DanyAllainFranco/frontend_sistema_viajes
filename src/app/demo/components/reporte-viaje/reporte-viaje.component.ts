@@ -14,7 +14,8 @@ export class ReporteViajeComponent implements OnInit {
   fechaFin!: Date; 
   transportistaSeleccionado!: any; 
   sucursalSeleccionada!: any; 
-
+  minDate: Date = new Date(1990, 0, 1); 
+  maxDate: Date = new Date(2990, 11, 31); 
   transportistas: any[] = []; 
   sucursales: any[] = []; 
   datosReporte: any[] = []; 

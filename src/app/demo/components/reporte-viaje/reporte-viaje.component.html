@@ -6,6 +6,8 @@
       <label for="fechaInicio">Fecha Inicio</label>
       <p-calendar
         id="fechaInicio"
+        [minDate]="minDate" 
+        [maxDate]="maxDate"  
         [(ngModel)]="fechaInicio"
         dateFormat="yy-mm-dd"
         placeholder="Selecciona la fecha de inicio"
@@ -16,6 +18,8 @@
       <label for="fechaFin">Fecha Fin</label>
       <p-calendar
         id="fechaFin"
+        [minDate]="minDate" 
+        [maxDate]="maxDate"  
         [(ngModel)]="fechaFin"
         dateFormat="yy-mm-dd"
         placeholder="Selecciona la fecha de fin"

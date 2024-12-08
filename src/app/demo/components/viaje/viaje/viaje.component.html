@@ -1,3 +1,4 @@
+<p-toast></p-toast>
 <button pButton label="Nuevo" class="p-button-success" icon="pi pi-plus" (click)="mostrarDialog()"></button>
 
 <p-table [value]="viajes" [responsive]="true" dataKey="viaj_id" [paginator]="true" [rows]="10">
@@ -26,7 +27,7 @@
   <div class="p-fluid form-grid">
     <div class="form-item">
       <label for="fecha_viaje">Fecha del Viaje</label>
-      <p-calendar        appendTo="body"      [(ngModel)]="viajeSeleccionado.viaj_fecha" [showTime]="false" dateFormat="dd/mm/yy" [placeholder]="'Seleccionar fecha'" id="fecha_viaje"></p-calendar>
+      <p-calendar     [minDate]="minDate" [maxDate]="maxDate"    appendTo="body"      [(ngModel)]="viajeSeleccionado.viaj_fecha" [showTime]="false" dateFormat="dd/mm/yy" [placeholder]="'Seleccionar fecha'" id="fecha_viaje"></p-calendar>
     </div>
 
     <div class="form-item">
